@@ -1,7 +1,7 @@
 {
   "files": {
-    "main.css": "/static/css/main.d730222b.css",
-    "main.js": "/static/js/main.08b99ec6.js",
+    "main.css": "/static/css/main.53cdc3d0.css",
+    "main.js": "/static/js/main.de7d498c.js",
     "static/media/casabarbero-laptop.png": "/static/media/casabarbero-laptop.0dda71c456dc9469b111.png",
     "static/media/Armand.jpg": "/static/media/Armand.8f8e0908507aacf257a0.jpg",
     "static/media/profile-1by1.jpg": "/static/media/profile-1by1.1b4695a9eeba5bdbdaef.jpg",
@@ -11,11 +11,11 @@
     "static/media/calculator-mobile.png": "/static/media/calculator-mobile.c4beb2ce5d34893ca668.png",
     "static/media/employee-task.png": "/static/media/employee-task.16df4f8ae25b4128afcf.png",
     "index.html": "/index.html",
-    "main.d730222b.css.map": "/static/css/main.d730222b.css.map",
-    "main.08b99ec6.js.map": "/static/js/main.08b99ec6.js.map"
+    "main.53cdc3d0.css.map": "/static/css/main.53cdc3d0.css.map",
+    "main.de7d498c.js.map": "/static/js/main.de7d498c.js.map"
   },
   "entrypoints": [
-    "static/css/main.d730222b.css",
-    "static/js/main.08b99ec6.js"
+    "static/css/main.53cdc3d0.css",
+    "static/js/main.de7d498c.js"
   ]
 }

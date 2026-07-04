@@ -83,26 +83,31 @@ h1, h2, h3, p { margin-top: 0; }
 .project { display: grid; grid-template-columns: minmax(0, 1.45fr) minmax(300px, .55fr); gap: clamp(42px, 7vw, 100px); padding: 72px 0; border-bottom: 1px solid var(--line); align-items: center; }
 .project:nth-child(even) { grid-template-columns: minmax(300px, .55fr) minmax(0, 1.45fr); }
 .project:nth-child(even) .project-visual { order: 2; }
-.project-visual { position: relative; min-width: 0; padding: 9px; overflow: hidden; background: #0b0e13; border: 1px solid var(--line-strong); border-radius: 13px; transition: border-color 300ms ease, transform 500ms var(--ease); }
+.project-visual { position: relative; min-width: 0; padding: 9px; overflow: visible; background: #0b0e13; border: 1px solid var(--line-strong); border-radius: 13px; transform-origin: center; will-change: transform; transition: border-color 300ms ease; }
 .project-visual::before { content: ''; position: absolute; inset: 0; z-index: 1; pointer-events: none; border-radius: 13px; opacity: 0; background: radial-gradient(240px circle at var(--mx, 50%) var(--my, 50%), rgba(230, 233, 238, .12), transparent 60%); transition: opacity 320ms ease; }
 .project-visual:hover::before { opacity: 1; }
 .project-visual::after { content: ''; position: absolute; inset: 36px 9px 9px; pointer-events: none; background: linear-gradient(135deg, transparent 65%, var(--signal-soft)); }
 .project--orange .project-visual::after { background: linear-gradient(135deg, transparent 65%, rgba(240, 164, 93, .15)); }
 .project--blue .project-visual::after { background: linear-gradient(135deg, transparent 65%, rgba(101, 184, 232, .15)); }
 .project--rose .project-visual::after { background: linear-gradient(135deg, transparent 65%, rgba(228, 133, 158, .15)); }
-.project-visual:hover { transform: translateY(-5px); border-color: var(--line-strong); }
+.project-visual:hover { border-color: var(--line-strong); }
 .project-visual img { width: 100%; aspect-ratio: 16 / 9; object-fit: cover; object-position: top; border-radius: 7px; filter: saturate(.75) contrast(1.04); transition: transform 700ms var(--ease), filter 350ms ease; }
 .project-visual:hover img { transform: scale(1.025); filter: saturate(1) contrast(1); }
 .project-preview { position: relative; width: 100%; aspect-ratio: 16 / 9; overflow: hidden; border-radius: 7px; }
 .employee-preview { background: #e9ecf2; }
 .employee-preview .employee-shot-main { position: absolute; inset: 0; width: 100%; height: 100%; aspect-ratio: auto; object-fit: cover; object-position: top left; border-radius: 0; filter: saturate(.92); }
-.employee-preview .employee-shot-modal { position: absolute; right: 4.5%; bottom: 7%; width: 27%; height: auto; aspect-ratio: auto; object-fit: contain; border-radius: 9px; border: 1px solid rgba(255,255,255,.55); box-shadow: 0 16px 38px rgba(0,0,0,.4); filter: none; z-index: 2; }
 .calculator-preview { background: #eef3fb; }
 .calculator-preview .calculator-shot-main { position: absolute; inset: 0; width: 100%; height: 100%; aspect-ratio: auto; object-fit: cover; object-position: center; border-radius: 0; filter: saturate(.95); }
-.calculator-preview .calculator-shot-mobile { position: absolute; right: 4.5%; bottom: 7%; width: 21%; height: auto; aspect-ratio: auto; object-fit: contain; border-radius: 10px; border: 1px solid rgba(255,255,255,.5); box-shadow: 0 16px 38px rgba(0,0,0,.4); filter: none; z-index: 2; }
 .casabarbero-preview { background: #14100c; }
 .casabarbero-preview .casabarbero-shot-main { position: absolute; inset: 0; width: 100%; height: 100%; aspect-ratio: auto; object-fit: cover; object-position: top left; border-radius: 0; filter: saturate(.95); }
-.casabarbero-preview .casabarbero-shot-mobile { position: absolute; right: 4.5%; bottom: 7%; width: 20%; height: auto; aspect-ratio: auto; object-fit: contain; border-radius: 10px; border: 1px solid rgba(212,165,116,.35); box-shadow: 0 16px 38px rgba(0,0,0,.5); filter: none; z-index: 2; }
+/* Floating 3-layer device stack: sits slightly outside the frame, tilts toward the cursor.
+   Scoped under .project-visual so it wins over the broad `.project-visual img` / :hover rules. */
+.project-visual .device-stack { position: absolute; right: -3%; bottom: -5%; width: 21%; z-index: 2; pointer-events: none; will-change: transform; }
+.project-visual .device-stack .device-layer { display: block; width: 100%; height: auto; aspect-ratio: auto; object-fit: contain; border-radius: 12px; border: 1px solid rgba(255,255,255,.16); filter: none; transition: none; }
+.project-visual .device-stack .device-layer-front { position: relative; z-index: 3; transform: none; box-shadow: 0 28px 60px rgba(0,0,0,.6); }
+.project-visual .device-stack .device-layer-mid { position: absolute; top: 0; left: 0; z-index: 2; transform: translate(5%, 7%) scale(.96); opacity: .65; filter: blur(2px) brightness(.75); }
+.project-visual .device-stack .device-layer-back { position: absolute; top: 0; left: 0; z-index: 1; transform: translate(10%, 14%) scale(.9); opacity: .4; filter: blur(3px) brightness(.55); }
+.project-visual .device-stack--casabarbero .device-layer-front { border-color: rgba(212,165,116,.4); }
 .browser-bar { height: 28px; display: flex; align-items: center; gap: 5px; padding: 0 6px; }
 .browser-bar span { width: 6px; height: 6px; border: 1px solid var(--quiet); border-radius: 50%; }
 .browser-bar small { margin-left: auto; color: var(--quiet); font: 7px var(--mono); text-transform: uppercase; letter-spacing: .06em; }

@@ -5,6 +5,7 @@ import {
   useReducedMotion,
   useScroll,
   useSpring,
+  useTransform,
 } from "framer-motion";
 import emailjs from "emailjs-com";
 
@@ -340,8 +341,188 @@ function Hero() {
   );
 }
 
-function Work() {
+const previewConfig = {
+  employee: {
+    className: "employee-preview",
+    mainSrc: employeeDashboard,
+    mainClassName: "employee-shot-main",
+    overlaySrc: employeeTask,
+  },
+  calculator: {
+    className: "calculator-preview",
+    mainSrc: calculatorLaptop,
+    mainClassName: "calculator-shot-main",
+    overlaySrc: calculatorMobile,
+  },
+  casabarbero: {
+    className: "casabarbero-preview",
+    mainSrc: casaBarberoLaptop,
+    mainClassName: "casabarbero-shot-main",
+    overlaySrc: casaBarberoMobile,
+  },
+};
+
+// Each card owns its own motion values, so the visual lives in its own
+// component (hooks can't be created inside the projects.map).
+function ProjectVisual({ project, index }) {
   const reduceMotion = useReducedMotion();
+  const cardRef = useRef(null);
+
+  // Pointer position relative to the card centre (~ -0.5..0.5), spring-smoothed.
+  const px = useMotionValue(0);
+  const py = useMotionValue(0);
+  const springConfig = { stiffness: 150, damping: 18, mass: 0.2 };
+  const sx = useSpring(px, springConfig);
+  const sy = useSpring(py, springConfig);
+
+  // The whole frame tilts only subtly (~3deg) toward the cursor.
+  const cardRotateX = useTransform(sy, [-0.5, 0.5], [3, -3]);
+  const cardRotateY = useTransform(sx, [-0.5, 0.5], [-3, 3]);
+
+  // The floating device turns harder (~13deg) and floats on a nearer plane.
+  const phoneRotateX = useTransform(sy, [-0.5, 0.5], [13, -13]);
+  const phoneRotateY = useTransform(sx, [-0.5, 0.5], [-13, 13]);
+  const phoneCursorX = useTransform(sx, [-0.5, 0.5], [16, -16]);
+  const phoneCursorY = useTransform(sy, [-0.5, 0.5], [16, -16]);
+
+  // Subtle scroll parallax on the floating device (safe: it has margin).
+  const { scrollYProgress } = useScroll({
+    target: cardRef,
+    offset: ["start end", "end start"],
+  });
+  const phoneScrollY = useTransform(scrollYProgress, [0, 1], [26, -26]);
+  const phoneY = useTransform(
+    [phoneCursorY, phoneScrollY],
+    ([cursor, scroll]) => cursor + scroll,
+  );
+
+  const handleMove = (event) => {
+    const rect = event.currentTarget.getBoundingClientRect();
+    px.set((event.clientX - rect.left) / rect.width - 0.5);
+    py.set((event.clientY - rect.top) / rect.height - 0.5);
+    event.currentTarget.style.setProperty(
+      "--mx",
+      `${event.clientX - rect.left}px`,
+    );
+    event.currentTarget.style.setProperty(
+      "--my",
+      `${event.clientY - rect.top}px`,
+    );
+  };
+
+  const handleLeave = () => {
+    px.set(0);
+    py.set(0);
+  };
+
+  const preview = previewConfig[project.preview];
+
+  return (
+    <motion.a
+      ref={cardRef}
+      className="project-visual"
+      href={project.liveUrl || project.url}
+      target="_blank"
+      rel="noreferrer"
+      aria-label={`Open ${project.title}${project.liveUrl ? " live demo" : " on GitHub"}`}
+      onMouseMove={reduceMotion ? undefined : handleMove}
+      onMouseLeave={reduceMotion ? undefined : handleLeave}
+      style={
+        reduceMotion
+          ? undefined
+          : {
+              rotateX: cardRotateX,
+              rotateY: cardRotateY,
+              transformPerspective: 1000,
+            }
+      }
+      whileHover={reduceMotion ? undefined : { y: -4 }}
+      transition={{ type: "spring", stiffness: 200, damping: 22 }}
+    >
+      <div className="browser-bar">
+        <span />
+        <span />
+        <span />
+        <small>
+          {project.liveUrl
+            ? new URL(project.liveUrl).hostname
+            : "github.com/Etan31"}
+        </small>
+      </div>
+      {project.image && (
+        <img
+          src={project.image}
+          alt={`${project.title} project interface`}
+          loading={index === 0 ? "eager" : "lazy"}
+        />
+      )}
+      {preview && (
+        <>
+          <div
+            className={`project-preview ${preview.className}`}
+            aria-hidden="true"
+          >
+            <motion.img
+              className={preview.mainClassName}
+              src={preview.mainSrc}
+              alt=""
+              loading={index === 0 ? "eager" : "lazy"}
+              initial={reduceMotion ? false : { opacity: 0, scale: 1.05 }}
+              whileInView={reduceMotion ? {} : { opacity: 1, scale: 1 }}
+              viewport={{ once: true, amount: 0.3 }}
+              transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
+            />
+          </div>
+          {/* Floating device: 3 layered copies of the mobile shot for depth,
+              sitting slightly outside the frame and turning toward the cursor. */}
+          <motion.div
+            className={`device-stack device-stack--${project.preview}`}
+            aria-hidden="true"
+            initial={reduceMotion ? false : { opacity: 0, scale: 0.94 }}
+            whileInView={reduceMotion ? {} : { opacity: 1, scale: 1 }}
+            viewport={{ once: true, amount: 0.3 }}
+            transition={{ duration: 0.9, delay: 0.25, ease: [0.22, 1, 0.36, 1] }}
+            style={
+              reduceMotion
+                ? undefined
+                : {
+                    rotateX: phoneRotateX,
+                    rotateY: phoneRotateY,
+                    x: phoneCursorX,
+                    y: phoneY,
+                    transformPerspective: 600,
+                  }
+            }
+          >
+            <img
+              className="device-layer device-layer-back"
+              src={preview.overlaySrc}
+              alt=""
+              loading="lazy"
+            />
+            <img
+              className="device-layer device-layer-mid"
+              src={preview.overlaySrc}
+              alt=""
+              loading="lazy"
+            />
+            <img
+              className="device-layer device-layer-front"
+              src={preview.overlaySrc}
+              alt=""
+              loading="lazy"
+            />
+          </motion.div>
+        </>
+      )}
+      <span className="project-open">
+        <ArrowIcon />
+      </span>
+    </motion.a>
+  );
+}
+
+function Work() {
   return (
     <section className="work section-shell" id="work">
       <Reveal className="section-heading">
@@ -364,154 +545,7 @@ function Work() {
             className={`project project--${project.tone}`}
             key={project.title}
           >
-            <a
-              className="project-visual"
-              href={project.liveUrl || project.url}
-              target="_blank"
-              rel="noreferrer"
-              aria-label={`Open ${project.title}${project.liveUrl ? " live demo" : " on GitHub"}`}
-              onMouseMove={
-                reduceMotion
-                  ? undefined
-                  : (event) => {
-                      const rect = event.currentTarget.getBoundingClientRect();
-                      event.currentTarget.style.setProperty(
-                        "--mx",
-                        `${event.clientX - rect.left}px`,
-                      );
-                      event.currentTarget.style.setProperty(
-                        "--my",
-                        `${event.clientY - rect.top}px`,
-                      );
-                    }
-              }
-            >
-              <div className="browser-bar">
-                <span />
-                <span />
-                <span />
-                <small>
-                  {project.liveUrl
-                    ? new URL(project.liveUrl).hostname
-                    : "github.com/Etan31"}
-                </small>
-              </div>
-              {project.image && (
-                <img
-                  src={project.image}
-                  alt={`${project.title} project interface`}
-                  loading={index === 0 ? "eager" : "lazy"}
-                />
-              )}
-              {project.preview === "employee" && (
-                <div
-                  className="project-preview employee-preview"
-                  aria-hidden="true"
-                >
-                  <motion.img
-                    className="employee-shot-main"
-                    src={employeeDashboard}
-                    alt=""
-                    loading="lazy"
-                    initial={reduceMotion ? false : { opacity: 0, scale: 1.04 }}
-                    whileInView={reduceMotion ? {} : { opacity: 1, scale: 1 }}
-                    viewport={{ once: true, amount: 0.3 }}
-                    transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
-                  />
-                  <motion.img
-                    className="employee-shot-modal"
-                    src={employeeTask}
-                    alt=""
-                    loading="lazy"
-                    initial={
-                      reduceMotion ? false : { opacity: 0, y: 28, scale: 0.94 }
-                    }
-                    whileInView={
-                      reduceMotion ? {} : { opacity: 1, y: 0, scale: 1 }
-                    }
-                    viewport={{ once: true, amount: 0.3 }}
-                    transition={{
-                      duration: 1.5,
-                      delay: 0.35,
-                      ease: [0.22, 1, 0.36, 1],
-                    }}
-                  />
-                </div>
-              )}
-              {project.preview === "calculator" && (
-                <div
-                  className="project-preview calculator-preview"
-                  aria-hidden="true"
-                >
-                  <motion.img
-                    className="calculator-shot-main"
-                    src={calculatorLaptop}
-                    alt=""
-                    loading="lazy"
-                    initial={reduceMotion ? false : { opacity: 0, scale: 1.04 }}
-                    whileInView={reduceMotion ? {} : { opacity: 1, scale: 1 }}
-                    viewport={{ once: true, amount: 0.3 }}
-                    transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
-                  />
-                  <motion.img
-                    className="calculator-shot-mobile"
-                    src={calculatorMobile}
-                    alt=""
-                    loading="lazy"
-                    initial={
-                      reduceMotion ? false : { opacity: 0, y: 28, scale: 0.94 }
-                    }
-                    whileInView={
-                      reduceMotion ? {} : { opacity: 1, y: 0, scale: 1 }
-                    }
-                    viewport={{ once: true, amount: 0.3 }}
-                    transition={{
-                      duration: 1.5,
-                      delay: 0.35,
-                      ease: [0.22, 1, 0.36, 1],
-                    }}
-                  />
-                </div>
-              )}
-              {project.preview === "casabarbero" && (
-                <div
-                  className="project-preview casabarbero-preview"
-                  aria-hidden="true"
-                >
-                  <motion.img
-                    className="casabarbero-shot-main"
-                    src={casaBarberoLaptop}
-                    alt=""
-                    loading="lazy"
-                    initial={reduceMotion ? false : { opacity: 0, scale: 1.04 }}
-                    whileInView={reduceMotion ? {} : { opacity: 1, scale: 1 }}
-                    viewport={{ once: true, amount: 0.3 }}
-                    transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
-                  />
-                  <motion.img
-                    className="casabarbero-shot-mobile"
-                    src={casaBarberoMobile}
-                    alt=""
-                    loading="lazy"
-                    initial={
-                      reduceMotion ? false : { opacity: 0, y: 28, scale: 0.94 }
-                    }
-                    whileInView={
-                      reduceMotion ? {} : { opacity: 1, y: 0, scale: 1 }
-                    }
-                    viewport={{ once: true, amount: 0.3 }}
-                    transition={{
-                      duration: 1.5,
-                      delay: 0.35,
-                      ease: [0.22, 1, 0.36, 1],
-                    }}
-                  />
-                </div>
-              )}
-              <span className="project-open">
-                <ArrowIcon />
-              </span>
-            </a>
+            <ProjectVisual project={project} index={index} />
             <div className="project-copy">
               <div className="project-meta">
                 <span>{String(index + 1).padStart(2, "0")}</span>
