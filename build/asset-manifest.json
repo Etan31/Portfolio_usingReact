@@ -1,20 +1,21 @@
 {
   "files": {
-    "main.css": "/static/css/main.ce26c6a0.css",
-    "main.js": "/static/js/main.50f8bad9.js",
+    "main.css": "/static/css/main.d730222b.css",
+    "main.js": "/static/js/main.e252cfe6.js",
+    "static/media/casabarbero-laptop.png": "/static/media/casabarbero-laptop.0dda71c456dc9469b111.png",
     "static/media/Armand.jpg": "/static/media/Armand.8f8e0908507aacf257a0.jpg",
     "static/media/profile-1by1.jpg": "/static/media/profile-1by1.1b4695a9eeba5bdbdaef.jpg",
+    "static/media/casabarbero-mobile.png": "/static/media/casabarbero-mobile.5dd98484a98dda2831ed.png",
     "static/media/employee-dashboard.png": "/static/media/employee-dashboard.0eebba46c33c295a3d4e.png",
-    "static/media/skycast1.png": "/static/media/skycast1.ee5a226a1f27adda64d9.png",
     "static/media/calculator-laptop.png": "/static/media/calculator-laptop.db42eff646346cc6fbf6.png",
     "static/media/calculator-mobile.png": "/static/media/calculator-mobile.c4beb2ce5d34893ca668.png",
     "static/media/employee-task.png": "/static/media/employee-task.16df4f8ae25b4128afcf.png",
     "index.html": "/index.html",
-    "main.ce26c6a0.css.map": "/static/css/main.ce26c6a0.css.map",
-    "main.50f8bad9.js.map": "/static/js/main.50f8bad9.js.map"
+    "main.d730222b.css.map": "/static/css/main.d730222b.css.map",
+    "main.e252cfe6.js.map": "/static/js/main.e252cfe6.js.map"
   },
   "entrypoints": [
-    "static/css/main.ce26c6a0.css",
-    "static/js/main.50f8bad9.js"
+    "static/css/main.d730222b.css",
+    "static/js/main.e252cfe6.js"
   ]
 }

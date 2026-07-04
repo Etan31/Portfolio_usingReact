@@ -100,6 +100,9 @@ h1, h2, h3, p { margin-top: 0; }
 .calculator-preview { background: #eef3fb; }
 .calculator-preview .calculator-shot-main { position: absolute; inset: 0; width: 100%; height: 100%; aspect-ratio: auto; object-fit: cover; object-position: center; border-radius: 0; filter: saturate(.95); }
 .calculator-preview .calculator-shot-mobile { position: absolute; right: 4.5%; bottom: 7%; width: 21%; height: auto; aspect-ratio: auto; object-fit: contain; border-radius: 10px; border: 1px solid rgba(255,255,255,.5); box-shadow: 0 16px 38px rgba(0,0,0,.4); filter: none; z-index: 2; }
+.casabarbero-preview { background: #14100c; }
+.casabarbero-preview .casabarbero-shot-main { position: absolute; inset: 0; width: 100%; height: 100%; aspect-ratio: auto; object-fit: cover; object-position: top left; border-radius: 0; filter: saturate(.95); }
+.casabarbero-preview .casabarbero-shot-mobile { position: absolute; right: 4.5%; bottom: 7%; width: 20%; height: auto; aspect-ratio: auto; object-fit: contain; border-radius: 10px; border: 1px solid rgba(212,165,116,.35); box-shadow: 0 16px 38px rgba(0,0,0,.5); filter: none; z-index: 2; }
 .browser-bar { height: 28px; display: flex; align-items: center; gap: 5px; padding: 0 6px; }
 .browser-bar span { width: 6px; height: 6px; border: 1px solid var(--quiet); border-radius: 50%; }
 .browser-bar small { margin-left: auto; color: var(--quiet); font: 7px var(--mono); text-transform: uppercase; letter-spacing: .06em; }

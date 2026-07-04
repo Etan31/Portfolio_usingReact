@@ -9,7 +9,8 @@ import {
 import emailjs from "emailjs-com";
 
 import profile from "./imgs/profile-1by1.jpg";
-import skycast from "./imgs/skycast/skycast1.png";
+import casaBarberoLaptop from "./imgs/casabarbero/casabarbero-laptop.png";
+import casaBarberoMobile from "./imgs/casabarbero/casabarbero-mobile.png";
 import armand from "./imgs/profiles/Armand.jpg";
 import employeeDashboard from "./imgs/employee/employee-dashboard.png";
 import employeeTask from "./imgs/employee/employee-task.png";
@@ -27,14 +28,15 @@ const resumeUrl =
 
 const projects = [
   {
-    title: "Skycast",
-    kicker: "Weather intelligence",
+    title: "Casa Barbero",
+    kicker: "B2B web app template",
     description:
-      "A location-aware weather experience that turns live forecast, air quality, humidity, and pressure data into a clear daily briefing.",
-    tags: ["JavaScript", "OpenWeather API", "Responsive UI"],
-    image: skycast,
-    url: "https://github.com/Etan31/skycast",
-    tone: "violet",
+      "A full-stack B2B template for barbershops: a polished customer-facing landing and booking experience backed by an admin dashboard. Built on the PERN stack and deployed on AWS Amplify.",
+    tags: ["React", "Express", "PostgreSQL", "AWS Amplify"],
+    preview: "casabarbero",
+    liveUrl: "https://barbero.tristanehron.xyz/",
+    url: "https://github.com/Etan31/templates_webpage",
+    tone: "orange",
   },
   {
     title: "Employee Portal",
@@ -352,8 +354,8 @@ function Work() {
           </h2>
         </div>
         <p>
-          A few projects across public data, workplace operations, and playful
-          interaction.
+          A few projects across client products, workplace operations, and
+          playful interaction.
         </p>
       </Reveal>
       <div className="project-list">
@@ -454,6 +456,41 @@ function Work() {
                   <motion.img
                     className="calculator-shot-mobile"
                     src={calculatorMobile}
+                    alt=""
+                    loading="lazy"
+                    initial={
+                      reduceMotion ? false : { opacity: 0, y: 28, scale: 0.94 }
+                    }
+                    whileInView={
+                      reduceMotion ? {} : { opacity: 1, y: 0, scale: 1 }
+                    }
+                    viewport={{ once: true, amount: 0.3 }}
+                    transition={{
+                      duration: 1.5,
+                      delay: 0.35,
+                      ease: [0.22, 1, 0.36, 1],
+                    }}
+                  />
+                </div>
+              )}
+              {project.preview === "casabarbero" && (
+                <div
+                  className="project-preview casabarbero-preview"
+                  aria-hidden="true"
+                >
+                  <motion.img
+                    className="casabarbero-shot-main"
+                    src={casaBarberoLaptop}
+                    alt=""
+                    loading="lazy"
+                    initial={reduceMotion ? false : { opacity: 0, scale: 1.04 }}
+                    whileInView={reduceMotion ? {} : { opacity: 1, scale: 1 }}
+                    viewport={{ once: true, amount: 0.3 }}
+                    transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
+                  />
+                  <motion.img
+                    className="casabarbero-shot-mobile"
+                    src={casaBarberoMobile}
                     alt=""
                     loading="lazy"
                     initial={
