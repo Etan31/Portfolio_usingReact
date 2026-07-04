@@ -32,7 +32,7 @@ const projects = [
     kicker: "B2B web app template",
     description:
       "A full-stack B2B template for barbershops: a polished customer-facing landing and booking experience backed by an admin dashboard. Built on the PERN stack and deployed on AWS Amplify.",
-    tags: ["React", "Express", "PostgreSQL", "AWS Amplify"],
+    tags: ["React", "Full stack", "Fly.io", "AWS Amplify", "Supabase"],
     preview: "casabarbero",
     liveUrl: "https://barbero.tristanehron.xyz/",
     url: "https://github.com/Etan31/templates_webpage",
@@ -572,9 +572,9 @@ function About() {
           <div className="about-columns">
             <p>
               I’m Tristan, a full-stack developer based in Metro Manila with
-              around two years of experience. I enjoy the full path from
-              shaping an idea to building the server-side logic and polishing
-              the interface people actually touch.
+              around two years of experience. I enjoy the full path from shaping
+              an idea to building the server-side logic and polishing the
+              interface people actually touch.
             </p>
             <p>
               Building core banking systems at Avaloq and web platforms at
@@ -625,8 +625,8 @@ function Experience() {
           </h2>
         </div>
         <p>
-          From core banking at Avaloq to government and city platforms,
-          building dependable, secure software end to end.
+          From core banking at Avaloq to government and city platforms, building
+          dependable, secure software end to end.
         </p>
       </Reveal>
       <div className="timeline">
